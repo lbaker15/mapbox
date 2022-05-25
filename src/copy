@@ -1,0 +1,19 @@
+import { connect } from "react-redux"
+import { FilterBtns } from "../UI/organisms/filterBtns"
+import { RootState } from '../store';
+
+type Props = {
+    
+}
+const DashboardTemp = ({}: Props) => {
+    return (
+        <div>
+            <FilterBtns />
+        </div>
+    )
+}
+
+const mapStateToProps = (state: RootState) => ({
+    reducer: state.reducer
+})
+export default connect(mapStateToProps)(DashboardTemp)

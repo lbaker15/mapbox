@@ -1,16 +1,44 @@
+$red: #f45b5b;
 .sidebar {
-    background-color: rgba(216, 216, 216, 0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     color: black;
-    padding: 6px 12px;
     font-family: roboto;
     font-size: 20px;
     z-index: 10;
     width: 300px;
     position: fixed;
-    top: 0;
-    left: 0;
-    margin: 12px;
+    top: 5px;
+    left: 15px;
+    height: 96vh;
     border-radius: 4px;
+}
+$pad: 10px;
+.sidebar .top {
+    width: 100%;
+    background: $red;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    padding: $pad 0px;
+}
+.sidebar .top input {
+    border: none;
+    padding: 2px;
+    margin-left: $pad;
+}
+.sidebar .body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    overflow-y: scroll;
+    padding-top: 15px;
+    height: 100%;
+}
+.body-item {
+    background: rgba(134, 134, 134, 0.5);
+    width: 90%;
 }
 .filter {
     position: fixed;
@@ -30,41 +58,78 @@
     position: fixed; top: 0; left: 0;
     z-index: 1;
 }
-
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
-// .mapboxgl-marker {
-// background-size: cover;
-// width: 50px;
-// height: 50px;
-// // border-radius: 50%;
-// // cursor: pointer;
-// svg {
-// display: none;   
-// }
-// }
-
-.marker {
-    position: absolute;
-    background-color: #000;
-    border-radius: 100px;
-    border: 10px solid red;
-    width: 25px;
-    height: 25px;
-    
+//my-class mapboxgl-marker mapboxgl-marker-anchor-center
+.mapboxgl-marker {
+    background-size: cover;
+    width: 35px;
+    height: 50px;
+    cursor: pointer;
 }
-
-.marker2 {
-    border: 10px solid blue;
+.my-class {
+    background-image: url('../../images/1_new.png');
 }
-
-
-.marker3 {
-    border: 10px solid green;
+.w-90 {
+    width: 90%;
+    margin-left: 5%;
 }
-
-#hidden {
-    display: none;
-    width: 0;
-    height: 0;
-    overflow: hidden;
+.mapboxgl-popup-content {
+    padding: 0 !important;
+    font-family: roboto;
+    h2 {
+        text-align: center;
+        font-weight: 400;
+        margin-bottom: 8px;
+        font-size:16px;
+        margin-left: auto; margin-left: auto;
+    }
+    h3 {
+        margin: 0;
+        margin-left: auto;
+        font-weight: 400;
+        margin-left: auto;
+        font-size: 13px;
+        margin-bottom: 25px;
+    }
+    #contact {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+}
+.mapboxgl-popup-content #footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 5px;
+    button {
+        background: none;
+        border: none;
+        width: 40px; height: 40px;
+        flex-shrink: 0;
+        background-image: url('../../images/openmaps_button.png');
+        background-position: 50% 50%;
+        background-size: cover;
+        margin-right: 5px;
+    }
+    button:nth-child(2) {
+        background-image: url('../../images/call_button.png');
+    }
+    #dets {
+        padding-bottom: 10px; padding-top: 5px;
+        p {padding: 0; margin:0;}
+    }
+}
+.mapboxgl-popup-content #header {
+    background: $red;
+    width: 100%;
+    padding: 8px 0;
+    font-family: roboto;
+    font-weight: 600;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    font-size: 18px;
 }

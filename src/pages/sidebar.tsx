@@ -9,8 +9,14 @@ const Sidebar = ({ markersSt, setMarkersSt, mapRef, features, setShowingFeatures
     const [showingResults, setShowingResults] = useState<any>([])
     const handleChange = (e: any) => {
         setSearchSt(e.target.value)
-        setValues()
     }
+    useEffect(() => {
+        if (searchSt === '') {
+            setShowingResults(state)
+        } else {
+            setValues()
+        }
+    }, [searchSt])
     const setValues = () => {
         const searchedObjects: any = []
         state.forEach((singleObject: any, index: any) => {

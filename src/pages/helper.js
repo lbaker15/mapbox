@@ -8,15 +8,15 @@ import img6 from '../images/6_pro.png';
 import img7 from '../images/7_aktiv.png';
 import img8 from '../images/8_passiv.png';
 import img9 from '../images/9_dead.png';
-const images:any = [img1, img2, img3, img4, img5, img6, img7, img8, img9]
+const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9]
 
-export const setMarkers = ({close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt}: any) => {
-    markersSt.map((marker:any) => {
+export const setMarkers = ({close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt}) => {
+    markersSt.map((marker) => {
         marker.remove()
     })
 
-    let markers:any = []; let bounds:any = [];
-    showingFeatures.map((feature: any, i:any) => {
+    let markers = []; let bounds = [];
+    showingFeatures.map((feature, i) => {
         let image = images[feature.properties.marker-1]
         //Element creation (grab from dom D:) Could dynamically add the marker to the DOM here
         let element = document.createElement('div')

@@ -3,12 +3,12 @@ import React, { Fragment, ReactNode, RefObject, useCallback, useEffect, useState
 import { RootState } from '../store';
 import { setMarkers } from './helper';
 
-const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, mapRef, features, setShowingFeatures }: any) => {
+const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, mapRef, features, setShowingFeatures }) => {
     const [searchSt, setSearchSt] = useState('')
     const [test, setTest] = useState(0)
-    const [state, setState] = useState<any>([])
-    const [showingResults, setShowingResults] = useState<any>([])
-    const handleChange = (e: any) => {
+    const [state, setState] = useState([])
+    const [showingResults, setShowingResults] = useState([])
+    const handleChange = (e) => {
         setSearchSt(e.target.value)
     }
     useEffect(() => {
@@ -19,14 +19,14 @@ const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, 
         }
     }, [searchSt])
     const setValues = () => {
-        const searchedObjects: any = []
-        state.forEach((singleObject: any, index: any) => {
+        const searchedObjects = []
+        state.forEach((singleObject, index) => {
             console.log(singleObject)
-            Promise.all(Object.values(singleObject).map((onlyValues: any, valIndex) => {
+            Promise.all(Object.values(singleObject).map((onlyValues, valIndex) => {
                 if (onlyValues) {
                     if (onlyValues.toLowerCase().includes(searchSt.toLowerCase())) {
                         console.log('inc')
-                        if (!searchedObjects.find((obj: any) => obj === singleObject)) {
+                        if (!searchedObjects.find((obj) => obj === singleObject)) {
                             console.log('not found')
                             searchedObjects.push(singleObject)
                             return;
@@ -41,10 +41,10 @@ const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, 
         })
     }
     const handleClick = () => {
-        let a: any = []
+        let a = []
         setValues()
-        showingResults.map((item: any, i: any) => {
-            let newArr = features.filter((f: any) => {
+        showingResults.map((item, i) => {
+            let newArr = features.filter((f) => {
                 return f.id === item.id;
             })
             if (newArr.length) { a.push(newArr[0]) }
@@ -57,7 +57,7 @@ const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, 
     }
     useEffect(() => {
         let arr = new Array;
-        features.map((item: any, i: any) => {
+        features.map((item, i) => {
             const { properties } = item;
             let cn = properties.companyName;
             let c = properties.contact;
@@ -112,7 +112,7 @@ const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, 
                 </button>
             </div>
             <div className='body'>
-                {showingResults.map((item: any, i: any) => {
+                {showingResults.map((item, i) => {
                     const properties = item;
                     return (
                         <div

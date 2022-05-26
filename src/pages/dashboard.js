@@ -1,6 +1,5 @@
 import { connect, useDispatch } from 'react-redux';
 import React, { Fragment, ReactNode, RefObject, useCallback, useEffect, useState } from 'react';
-import { RootState } from '../store';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import Filter from './filter';
@@ -8,28 +7,27 @@ import {setMarkers} from './helper';
 import Sidebar from './sidebar';
 let access = 'pk.eyJ1IjoiYmxhdWVmZWRlcjYiLCJhIjoiY2wyM2xweDlsMDl4eDNqcGIxMzlldzNibSJ9.dFnmYEKtVv34_JChnYZRjA';
 mapboxgl.accessToken = access;
+mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default; // eslint-disable-line
 
 
-type Props = {
-    reducer: { items: object[] }
-}
-const Dashboard = ({ reducer }: Props) => {
+
+const Dashboard = ({ reducer }) => {
     let dispatch = useDispatch();
-    const [bounds, setBounds] = useState<any>([])
+    const [bounds, setBounds] = useState([])
     const [close, setClose] = useState(true)
     const [features, setFeatures] = useState([])
     const [showingFeatures, setShowingFeatures] = useState([])
-    const [filter, setFilter] = useState<any[]>([]);
+    const [filter, setFilter] = useState([]);
     const [filterState, showFilter] = useState(false)
-    const [markersSt, setMarkersSt] = useState<any>([])
+    const [markersSt, setMarkersSt] = useState([])
     const [agent, setAgent] = useState('')
-    let mapContainer: RefObject<HTMLDivElement> = React.useRef(null)
-    let mapRef: any = React.useRef(null);
+    let mapContainer=React.useRef(null)
+    let mapRef = React.useRef(null);
     let ref = React.useRef(null);
     useEffect(() => {
         if (mapRef.current) return;
         if (mapContainer) {
-            const current: any = mapContainer.current;
+            const current = mapContainer.current;
             mapRef.current = new mapboxgl.Map({
                 container: current,
                 style: 'mapbox://styles/mapbox/streets-v11',
@@ -53,8 +51,8 @@ const Dashboard = ({ reducer }: Props) => {
     }, [mapRef])
     useEffect(() => {
         if (filter.length === 0) {
-            let arr:any = [];
-            features.map((item: any, i: number) => {
+            let arr = [];
+            features.map((item, i) => {
                 let agent = item.properties.agent;
                 console.log('ag', agent)
                 if (agent) {
@@ -72,7 +70,7 @@ const Dashboard = ({ reducer }: Props) => {
             })
         }
     }, [features])
-    const handleChange = (e: any) => {
+    const handleChange = (e) => {
         let value = e.target.value;
         setAgent(value)
     }
@@ -82,7 +80,7 @@ const Dashboard = ({ reducer }: Props) => {
             console.log(arr)
             setShowingFeatures(arr)
         } else if (filter && features && agent) {
-            let arr = features.filter((item: any, i) => {
+            let arr = features.filter((item, i) => {
                 return item.properties.agent === agent
             });
             setShowingFeatures(arr)
@@ -108,7 +106,7 @@ const Dashboard = ({ reducer }: Props) => {
     )
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state) => ({
     reducer: state.reducer
 })
 

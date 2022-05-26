@@ -10,7 +10,7 @@ import img8 from '../images/8_passiv.png';
 import img9 from '../images/9_dead.png';
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9]
 
-export const setMarkers = ({close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt}) => {
+export const setMarkers = ({width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt}) => {
     markersSt.map((marker) => {
         marker.remove()
     })
@@ -58,7 +58,7 @@ export const setMarkers = ({close, setBounds, markersSt, showingFeatures, mapRef
             if (close) {
                 mapRef.current.fitBounds(bounds, {padding: {top:75, left: 75, right:75, bottom:75}, duration: 500})
             } else {
-                mapRef.current.fitBounds(bounds, {padding: {top:75, left: 300, right:75, bottom:75}, duration: 500})
+                mapRef.current.fitBounds(bounds, {padding: {top:75, left: width, right:75, bottom:75}, duration: 500})
             }
             setMarkersSt(markers)
         }

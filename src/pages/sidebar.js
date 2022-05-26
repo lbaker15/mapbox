@@ -2,12 +2,14 @@ import { connect, useDispatch } from 'react-redux';
 import React, { Fragment, ReactNode, RefObject, useCallback, useEffect, useState } from 'react';
 import { RootState } from '../store';
 import { setMarkers } from './helper';
+import { gsap } from 'gsap';
 
-const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, mapRef, features, setShowingFeatures }) => {
+const Sidebar = React.forwardRef(({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, mapRef, features, setShowingFeatures }, ref) => {
     const [searchSt, setSearchSt] = useState('')
-    const [test, setTest] = useState(0)
     const [state, setState] = useState([])
+    const [resize, setResize] = useState(Date.now())
     const [showingResults, setShowingResults] = useState([])
+
     const handleChange = (e) => {
         setSearchSt(e.target.value)
     }
@@ -34,7 +36,7 @@ const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, 
                     }
                 }
             })).then(() => {
-                if (index === state.length-1) {
+                if (index === state.length - 1) {
                     setShowingResults(searchedObjects)
                 }
             })
@@ -51,7 +53,8 @@ const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, 
             if (i === showingResults.length - 1) {
                 console.log(a)
                 let showingFeatures = a;
-                setMarkers({ close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
+                let width = ref.current.clientWidth;
+                setMarkers({ width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
             }
         })
     }
@@ -74,61 +77,94 @@ const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, 
         })
 
     }, [features])
-    const handleClose = () => {
-        let cl = !close; setClose(cl);
-        if (close) {
-        mapRef.current.easeTo({
-            padding: 300,
-            duration: 1000 // In ms. This matches the CSS transition duration property.
-        });
-        mapRef.current.fitBounds(bounds, {padding: {left: 300, top: 75, right: 75, bottom: 75}})
-        } else {
-            mapRef.current.easeTo({
-                padding: 0,
-                duration: 1000 // In ms. This matches the CSS transition duration property.
-            });
+    const setMapMenu = () => {
+        if (ref.current) {
+            let width = ref.current.clientWidth;
+            if (close) {
+                gsap.to(ref.current, { transform: `translateX(-${width - 50}px)` })
+                mapRef.current.easeTo({
+                    padding: 300,
+                    duration: 1000 // In ms. This matches the CSS transition duration property.
+                });
+                //console.log
+                mapRef.current.fitBounds(bounds, { padding: { left: 300, top: 75, right: 75, bottom: 75 } })
+            } else {
+                gsap.to(ref.current, { transform: 'translateX(0px)' })
+                mapRef.current.easeTo({
+                    padding: 0,
+                    duration: 1000 // In ms. This matches the CSS transition duration property.
+                });
+            }
         }
     }
+    const handleClose = () => {
+        let cl = !close; setClose(cl);
+    }
+    useEffect(() => {
+        if (ref.current && mapRef.current) {
+            setMapMenu()
+        }
+    }, [resize, close])
+
+    useEffect(() => {
+        window.addEventListener('resize', () => {
+            if (ref.current && mapRef.current) {
+                setResize(Date.now())
+            }
+        })
+        return () => {
+            window.removeEventListener('resize', () => { })
+        }
+    }, [])
+    console.log('sidebar rerender', close)
     return (
-        <>
-        <button
-        style={close ? {transform: 'translateX(0)'} : {transform: 'translate(305px)'}}
-        className="sidebarBtn"
-        onClick={handleClose}
-        >+</button>
-        <div 
-        style={close ? {transform: 'translateX(-325px)'}: {transform: 'translateX(0)'}}
-        className="sidebar">
-            <div className='top'>
-                <input
-                    disabled={state.length === 0}
-                    onChange={handleChange}
-                    value={searchSt}
-                />
-                <button
-                    onClick={handleClick}
-                >
-                    Search
-                </button>
-            </div>
-            <div className='body'>
-                {showingResults.map((item, i) => {
-                    const properties = item;
-                    return (
-                        <div
-                            data-value={item.id}
-                            className="body-item">
-                            <h2>{properties.cn}</h2>
-                            <h3>{properties.c}</h3>
-                            <h4>{properties.a}</h4>
-                            <h5>{properties.date} {(properties.date) ? '/' : null} Vertreter: {properties.agent}</h5>
-                        </div>
-                    )
-                })}
+        <div
+            ref={ref}
+            className="sidebar__outer">
+            <button
+                className="sidebarBtn"
+                onClick={handleClose}
+            >+</button>
+            <div
+                className="sidebar">
+                <div className='top'>
+                    <input
+                        disabled={state.length === 0}
+                        onChange={handleChange}
+                        value={searchSt}
+                    />
+                    <button
+                        onClick={handleClick}
+                    >
+                        Search
+                    </button>
+                </div>
+                <div className='body'>
+                    {showingResults.map((item, i) => {
+                        const properties = item;
+                        let date = (properties.date) ? new Date(Number(properties.date)).toDateString() : null;
+                        return (
+                            <div
+                                key={Math.random()}
+                                data-value={item.id}
+                                className="body-item">
+                                <h2>{properties.cn}</h2>
+                                <h3>{properties.c}</h3>
+                                <h4>{properties.a}</h4>
+
+                                <h5>
+                                    {(properties.date) ?
+                                        date + ' / '
+                                        : ''
+                                    }
+                                    Vertreter: {properties.agent}</h5>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         </div>
-        </>
     )
-}
+})
 
 export default React.memo(Sidebar);

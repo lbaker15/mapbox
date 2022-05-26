@@ -1,22 +1,28 @@
 $red: #f45b5b;
+.sidebar__outer {
+    position: fixed;
+    top: 5px;
+    left: 15px;
+    width: 350px;
+    height: 96vh;
+    display: flex;
+    z-index: 10;
+}
 .sidebar {
     background-color: rgba(255, 255, 255, 0.9);
     color: black;
     font-family: roboto;
     font-size: 20px;
-    z-index: 10;
-    width: 300px;
-    position: fixed;
-    top: 5px;
-    left: 15px;
+    width: 80%;
     height: 96vh;
+    order: 1;
     border-radius: 4px;
 }
 $pad: 10px;
 .sidebar .top {
-    width: 100%;
     background: $red;
     display: flex;
+    width: 100%;
     align-items: center;
     border-radius: 6px 0 0 6px;
     padding: $pad 0px;
@@ -24,7 +30,18 @@ $pad: 10px;
 .sidebar .top input {
     border: none;
     padding: 2px;
+    border-radius: 4px 0 0 4px;
+    width: 80%;
     margin-left: $pad;
+}
+.sidebar .top button {
+    width: 20%;
+    flex-shrink: 0;
+    min-width: 60px;
+    background: black; color: white;
+    border: none;
+    height: 20px;
+    border-radius: 0 4px 4px 0;
 }
 .sidebar .body {
     width: 100%;
@@ -37,29 +54,64 @@ $pad: 10px;
     height: 100%;
 }
 .sidebarBtn {
-    width: 50px; height: 50px;
+    width: 20%; height: 50px;
     background: $red;
     z-index: 10;
-    position:fixed;
+    // position:fixed;
     height: 41.3px;
     border: 0;
-    top: 5px;
+    order: 2;
+    // top: 5px;
     font-size: 26px;
     border-radius: 0 6px 6px 0;
 } 
+@media (max-width: 620px) {
+    .sidebar__outer {
+        width: 250px;
+    }
+    // .sidebar .top {
+    //     width: 200px;
+    // }
+}
 .body-item {
     background: rgba(134, 134, 134, 0.5);
-    width: 90%;
+    width: 85%;
+    padding: 5%;
+    font-family: roboto;
+    h2 {
+        font-size: 20px;
+        margin:0;
+    }
+    h3 {
+        font-size: 18px;
+        margin:0;
+    }
+    h4 {
+        font-size: 16px;
+        margin:0;
+    }
+    h5 {
+        font-size: 16px;
+        margin:0;
+    }
+}
+.filter__outer {
+    position: fixed;
+    right:10px; top:5px;
+    width: 200px; display: flex;
+    z-index: 9;
+    align-items: center; height: 41px;
 }
 .filter {
-    position: fixed;
-    right:10px; top:10px;
-    width: 200px;
-    background:white;
+    width: 100%;
     z-index: 100;
 }
 .filter select {
-    width: 100%;
+    width: 80%;
+    height: 19.3px;
+    float: right;
+    border: 1px solid $red;
+    border-radius: 4px;
 }
 .filter select option {
     word-break: break-all;
@@ -144,3 +196,4 @@ $pad: 10px;
     text-align: center;
     font-size: 18px;
 }
+

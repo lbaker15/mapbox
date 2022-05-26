@@ -3,8 +3,9 @@ import React, { Fragment, ReactNode, RefObject, useCallback, useEffect, useState
 import { RootState } from '../store';
 import { setMarkers } from './helper';
 
-const Sidebar = ({ markersSt, setMarkersSt, mapRef, features, setShowingFeatures }: any) => {
+const Sidebar = ({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, mapRef, features, setShowingFeatures }: any) => {
     const [searchSt, setSearchSt] = useState('')
+    const [test, setTest] = useState(0)
     const [state, setState] = useState<any>([])
     const [showingResults, setShowingResults] = useState<any>([])
     const handleChange = (e: any) => {
@@ -50,7 +51,7 @@ const Sidebar = ({ markersSt, setMarkersSt, mapRef, features, setShowingFeatures
             if (i === showingResults.length - 1) {
                 console.log(a)
                 let showingFeatures = a;
-                setMarkers({ markersSt, showingFeatures, mapRef, setMarkersSt })
+                setMarkers({ close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
             }
         })
     }
@@ -73,9 +74,31 @@ const Sidebar = ({ markersSt, setMarkersSt, mapRef, features, setShowingFeatures
         })
 
     }, [features])
-
+    const handleClose = () => {
+        let cl = !close; setClose(cl);
+        if (close) {
+        mapRef.current.easeTo({
+            padding: 300,
+            duration: 1000 // In ms. This matches the CSS transition duration property.
+        });
+        mapRef.current.fitBounds(bounds, {padding: {left: 300, top: 75, right: 75, bottom: 75}})
+        } else {
+            mapRef.current.easeTo({
+                padding: 0,
+                duration: 1000 // In ms. This matches the CSS transition duration property.
+            });
+        }
+    }
     return (
-        <div className="sidebar">
+        <>
+        <button
+        style={close ? {transform: 'translateX(0)'} : {transform: 'translate(305px)'}}
+        className="sidebarBtn"
+        onClick={handleClose}
+        >+</button>
+        <div 
+        style={close ? {transform: 'translateX(-325px)'}: {transform: 'translateX(0)'}}
+        className="sidebar">
             <div className='top'>
                 <input
                     disabled={state.length === 0}
@@ -104,6 +127,7 @@ const Sidebar = ({ markersSt, setMarkersSt, mapRef, features, setShowingFeatures
                 })}
             </div>
         </div>
+        </>
     )
 }
 

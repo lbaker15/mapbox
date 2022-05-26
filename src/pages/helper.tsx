@@ -10,12 +10,12 @@ import img8 from '../images/8_passiv.png';
 import img9 from '../images/9_dead.png';
 const images:any = [img1, img2, img3, img4, img5, img6, img7, img8, img9]
 
-export const setMarkers = ({markersSt, showingFeatures, mapRef, setMarkersSt}: any) => {
+export const setMarkers = ({close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt}: any) => {
     markersSt.map((marker:any) => {
         marker.remove()
     })
 
-    let markers:any = [];
+    let markers:any = []; let bounds:any = [];
     showingFeatures.map((feature: any, i:any) => {
         let image = images[feature.properties.marker-1]
         //Element creation (grab from dom D:) Could dynamically add the marker to the DOM here
@@ -48,8 +48,18 @@ export const setMarkers = ({markersSt, showingFeatures, mapRef, setMarkersSt}: a
                 )
         )
         .addTo(mapRef.current);
+        console.log(feature)
+        bounds.push(feature.geometry.coordinates)
         markers.push(marker)
         if (i === showingFeatures.length-1) {
+            // console.log('here')
+            bounds = (bounds.length===1) ? [bounds.flat(), bounds.flat()] : bounds;
+            setBounds(bounds)
+            if (close) {
+                mapRef.current.fitBounds(bounds, {padding: {top:75, left: 75, right:75, bottom:75}, duration: 500})
+            } else {
+                mapRef.current.fitBounds(bounds, {padding: {top:75, left: 300, right:75, bottom:75}, duration: 500})
+            }
             setMarkersSt(markers)
         }
     })

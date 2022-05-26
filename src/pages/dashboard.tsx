@@ -15,6 +15,8 @@ type Props = {
 }
 const Dashboard = ({ reducer }: Props) => {
     let dispatch = useDispatch();
+    const [bounds, setBounds] = useState<any>([])
+    const [close, setClose] = useState(true)
     const [features, setFeatures] = useState([])
     const [showingFeatures, setShowingFeatures] = useState([])
     const [filter, setFilter] = useState<any[]>([]);
@@ -44,6 +46,9 @@ const Dashboard = ({ reducer }: Props) => {
             .then(data => {
                 setFeatures(data.features)
                 //setTimeout(() => initialFeatures(), 500)
+            })
+            .catch(err => {
+                return err;
             })
     }, [mapRef])
     useEffect(() => {
@@ -86,14 +91,14 @@ const Dashboard = ({ reducer }: Props) => {
     useEffect(() => {
         if (agent) {
             //markerSt, showingFeatures, mapRef, setMarkersSt
-        setMarkers({markersSt, showingFeatures, mapRef, setMarkersSt})
+            setMarkers({close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt})
         }
     }, [showingFeatures])
 
 
     return (
         <Fragment>
-            <Sidebar markersSt={markersSt} mapRef={mapRef} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
+            <Sidebar close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} mapRef={mapRef} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
             {filterState && filter.length > 0 &&
                 <Filter handleChange={handleChange} filter={filter} />
             }

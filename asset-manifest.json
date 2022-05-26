@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/mapbox/static/css/main.add7eb33.css",
+    "main.js": "/mapbox/static/js/main.fc5d53f2.js",
+    "index.html": "/mapbox/index.html",
+    "main.add7eb33.css.map": "/mapbox/static/css/main.add7eb33.css.map",
+    "main.fc5d53f2.js.map": "/mapbox/static/js/main.fc5d53f2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.add7eb33.css",
+    "static/js/main.fc5d53f2.js"
+  ]
+}

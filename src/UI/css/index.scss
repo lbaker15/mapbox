@@ -32,6 +32,7 @@ $pad: 10px;
     padding: 2px;
     border-radius: 4px 0 0 4px;
     width: 80%;
+    user-select: all !important;
     margin-left: $pad;
 }
 .sidebar .top button {

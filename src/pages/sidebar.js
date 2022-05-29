@@ -81,19 +81,20 @@ const Sidebar = React.forwardRef(({ close, setClose, setBounds, markersSt, bound
         if (ref.current) {
             let width = ref.current.clientWidth;
             if (close) {
-                gsap.to(ref.current, { transform: `translateX(-${width - 50}px)` })
+                let margin = 15;
+                gsap.to(ref.current, { transform: `translateX(-${width - (width/5 - margin)}px)` })
                 mapRef.current.easeTo({
                     padding: 300,
                     duration: 1000 // In ms. This matches the CSS transition duration property.
                 });
-                //console.log
-                mapRef.current.fitBounds(bounds, { padding: { left: 300, top: 75, right: 75, bottom: 75 } })
+                mapRef.current.fitBounds(bounds, { padding: { left: 75, top: 75, right: 75, bottom: 75 } })
             } else {
                 gsap.to(ref.current, { transform: 'translateX(0px)' })
                 mapRef.current.easeTo({
                     padding: 0,
                     duration: 1000 // In ms. This matches the CSS transition duration property.
                 });
+                mapRef.current.fitBounds(bounds, { padding: { left: width, top: 75, right: 75, bottom: 75 } })
             }
         }
     }
@@ -129,9 +130,9 @@ const Sidebar = React.forwardRef(({ close, setClose, setBounds, markersSt, bound
                 className="sidebar">
                 <div className='top'>
                     <input
-                        disabled={state.length === 0}
+                        // disabled={state.length === 0}
                         onChange={handleChange}
-                        value={searchSt}
+                        value={searchSt} 
                     />
                     <button
                         onClick={handleClick}

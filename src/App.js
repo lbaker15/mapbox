@@ -5,7 +5,7 @@ import Dashboard from './pages/dashboard';
 function App() {
   return (
     <div className="App">
-      <Router>
+      <Router> 
         <Switch>
           <Route path="/" element={<Dashboard />} />
         </Switch>

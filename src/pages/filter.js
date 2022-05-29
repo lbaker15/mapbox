@@ -18,4 +18,4 @@ const Filter = ({ handleChange, filter }) => {
     )
 }
 
-export default Filter;
+export default React.memo(Filter);

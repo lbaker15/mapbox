@@ -1,10 +1,10 @@
 import { connect, useDispatch } from 'react-redux';
 import React, { Fragment, ReactNode, RefObject, useCallback, useEffect, useState } from 'react';
 import { RootState } from '../store';
-import { setMarkers } from './helper';
+import { setMarkers, addUsers } from './helper';
 import { gsap } from 'gsap';
 
-const Sidebar = React.forwardRef(({ close, setClose, setBounds, markersSt, bounds, setMarkersSt, mapRef, features, setShowingFeatures }, ref) => {
+const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt, bounds, setMarkersSt, mapRef, features, setShowingFeatures }, ref) => {
     const [searchSt, setSearchSt] = useState('')
     const [state, setState] = useState([])
     const [resize, setResize] = useState(Date.now())
@@ -55,6 +55,7 @@ const Sidebar = React.forwardRef(({ close, setClose, setBounds, markersSt, bound
                 let showingFeatures = a;
                 let width = ref.current.clientWidth;
                 setMarkers({ width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
+                addUsers({ users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
             }
         })
     }
@@ -83,18 +84,12 @@ const Sidebar = React.forwardRef(({ close, setClose, setBounds, markersSt, bound
             if (close) {
                 let margin = 15;
                 gsap.to(ref.current, { transform: `translateX(-${width - (width/5 - margin)}px)` })
-                mapRef.current.easeTo({
-                    padding: 300,
-                    duration: 1000 // In ms. This matches the CSS transition duration property.
-                });
-                mapRef.current.fitBounds(bounds, { padding: { left: 75, top: 75, right: 75, bottom: 75 } })
+               
+                mapRef.current.fitBounds(bounds, { padding: { left: 75, top: 75, right: 75, bottom: 75 }, duration: 500 })
             } else {
                 gsap.to(ref.current, { transform: 'translateX(0px)' })
-                mapRef.current.easeTo({
-                    padding: 0,
-                    duration: 1000 // In ms. This matches the CSS transition duration property.
-                });
-                mapRef.current.fitBounds(bounds, { padding: { left: width, top: 75, right: 75, bottom: 75 } })
+   
+                mapRef.current.fitBounds(bounds, { padding: { left: width, top: 75, right: 75, bottom: 75 }, duration: 500 })
             }
         }
     }

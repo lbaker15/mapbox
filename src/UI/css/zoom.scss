@@ -1,0 +1,25 @@
+.zoom {
+    position: fixed;
+    bottom: 65px;
+    right: 5px;
+    width: 260px;
+    height: 60px;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    input {
+        height: 20px;
+        width: 90%;
+    }
+}
+
+.user {
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+    width: 260px;
+    height: 60px;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+}

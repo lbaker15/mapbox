@@ -3,8 +3,10 @@ import React, { Fragment, ReactNode, RefObject, useCallback, useEffect, useState
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import Filter from './filter';
-import { setMarkers } from './helper';
+import { setMarkers, addUsers } from './helper';
 import Sidebar from './sidebar';
+import Zoom from './zoom';
+import User from './user';
 let access = 'pk.eyJ1IjoiYmxhdWVmZWRlcjYiLCJhIjoiY2wyM2xweDlsMDl4eDNqcGIxMzlldzNibSJ9.dFnmYEKtVv34_JChnYZRjA';
 mapboxgl.accessToken = access;
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default; // eslint-disable-line
@@ -20,6 +22,7 @@ const Dashboard = ({ reducer }) => {
     const [filter, setFilter] = useState([]);
     const [filterState, showFilter] = useState(false)
     const [markersSt, setMarkersSt] = useState([])
+    const [users, setUsers] = useState([])
     const [agent, setAgent] = useState('')
     let mapContainer = React.useRef(null)
     let mapRef = React.useRef(null);
@@ -32,7 +35,8 @@ const Dashboard = ({ reducer }) => {
                 container: current,
                 style: 'mapbox://styles/mapbox/streets-v11',
                 center: [0, 0],
-                zoom: 1
+                maxZoom: 20,
+                minZoom: 7
             });
         }
     }, [])
@@ -42,8 +46,13 @@ const Dashboard = ({ reducer }) => {
         fetch(`https://api.mapbox.com/datasets/v1/${username}/cl3j6sh8h0a2u27lnjadddnto/features?access_token=${accessToken}`)
             .then(res => res.json())
             .then(data => {
-                console.log(data)
-                setFeatures(data.features)
+                fetch(`https://api.mapbox.com/datasets/v1/${username}/cl3t0e5rv039s28mzlw0ni8g5/features?access_token=${accessToken}`)
+                .then(res => res.json())
+                .then(data2 => {
+                    let arr = data2.features;
+                    setUsers(arr)
+                    setFeatures(data.features)
+                })
             })
             .catch(err => {
                 return err;
@@ -88,16 +97,20 @@ const Dashboard = ({ reducer }) => {
     }, [agent])
     useEffect(() => {
         let width = ref.current.clientWidth;
-        setMarkers({ width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
-    }, [showingFeatures])
+        //Tried merging users arr with feature but really weird err invalid lat lng even tho were valid?
+        //call set markers within users? but remove all markers in users then add relevant user marker w no pop then go onto add other markers
+        addUsers({ users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
+    }, [showingFeatures, users])
 
     return (
         <Fragment>
-            <Sidebar ref={ref} close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} mapRef={mapRef} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
+            <Sidebar users={users} ref={ref} close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} mapRef={mapRef} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
             {filterState && filter.length > 0 &&
                 <Filter handleChange={handleChange} filter={filter} />
             }
             <div className="map" ref={mapContainer}></div>
+            <Zoom mapRef={mapRef} />
+            <User setShowingFeatures={setShowingFeatures} setUsers={setUsers} users={users} setAgent={setAgent} bounds={bounds} showingFeatures={showingFeatures} ref={ref} close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} mapRef={mapRef} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
         </Fragment>
 
     )

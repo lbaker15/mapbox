@@ -12,11 +12,14 @@ import img9 from '../images/9_dead.png';
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9]
 let userImage = img2;
 
-export const addUsers = ({users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt}) => {
+export const addUsers = ({usersSt, setUsersSt, users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt}) => {
     markersSt.map((marker) => {
         marker.remove()
     })
-    let markers = []; let bounds = [];
+    usersSt.map((marker) => {
+        marker.remove()
+    })
+    let markers = []; let bounds = []; let usersArr = [];
     users.map((user, i) => {
         let element = document.createElement('div')
         //Set style for each user here... ie if user.properties.name == 'Noah' class[0]
@@ -24,9 +27,9 @@ export const addUsers = ({users, width, close, setBounds, markersSt, showingFeat
         let marker = new mapboxgl.Marker(element)
         .setLngLat(user.geometry.coordinates)
         .addTo(mapRef.current);
-        markers.push(marker)
+        usersArr.push(marker)
         if (i === users.length-1) {
-            console.log('here')
+            setUsersSt(usersArr)
             setMarkers({ bounds, markers, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
         }
     })

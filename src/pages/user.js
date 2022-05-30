@@ -16,15 +16,18 @@ const User = ({ users, setUsers, setShowingFeatures, setAgent, bounds, width, cl
         setValue(event.target.value)
     }
     const handleClick = (e) => {
+        if (value) {
         if (!navigator.geolocation) {
             setStatus('Geolocation is not supported by your browser');
         } else {
             setStatus('Locating...');
             navigator.geolocation.getCurrentPosition((position) => {
                 setStatus(null);
-                setLat(position.coords.latitude);
-                setLng(position.coords.longitude);
-                console.log(id)
+                let lat = position.coords.latitude;
+                let lng = position.coords.longitude;
+                setLat(lat);
+                setLng(lng);
+                console.log(position.coords.latitude)
                 fetch(`https://api.mapbox.com/datasets/v1/blauefeder6/cl3t0e5rv039s28mzlw0ni8g5/features/${id}?access_token=sk.eyJ1IjoiYmxhdWVmZWRlcjYiLCJhIjoiY2wzajNpN2QxMGdzdzNqcGNjNWxiMjMwMyJ9.mfJc4Y3WDDTT83gGkb8YPQ`, {
                     method: 'PUT',
                     headers: {
@@ -48,13 +51,23 @@ const User = ({ users, setUsers, setShowingFeatures, setAgent, bounds, width, cl
                     .then(res => res.json())
                     .then(data2 => {
                         let arr = data2.features;
-                        setUsers(arr)
+                        //filter arr and make sure the current user (locate with id) is set to coords lat lng
+                        let arr2 = data2.features.map(user => {
+                            if (user.id === id) {
+                                user.geometry.coordinates = [lng,lat]
+                            }
+                            return user;
+                        })
+                        setUsers(arr2)
                     })
                 })
             }, () => {
                 setStatus('Unable to retrieve your location');
             });
         }
+    } else {
+        console.log('no')
+    }
     }
 
     if (users.length > 0) {

@@ -23,6 +23,7 @@ const Dashboard = ({ reducer }) => {
     const [filterState, showFilter] = useState(false)
     const [markersSt, setMarkersSt] = useState([])
     const [users, setUsers] = useState([])
+    const [usersSt, setUsersSt] = useState([])
     const [agent, setAgent] = useState('')
     let mapContainer = React.useRef(null)
     let mapRef = React.useRef(null);
@@ -99,7 +100,7 @@ const Dashboard = ({ reducer }) => {
         let width = ref.current.clientWidth;
         //Tried merging users arr with feature but really weird err invalid lat lng even tho were valid?
         //call set markers within users? but remove all markers in users then add relevant user marker w no pop then go onto add other markers
-        addUsers({ users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
+        addUsers({ usersSt, setUsersSt, users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
     }, [showingFeatures, users])
 
     return (

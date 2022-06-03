@@ -27,7 +27,7 @@ const Dashboard = ({ reducer }) => {
     const [agent, setAgent] = useState('')
     let mapContainer = React.useRef(null)
     let mapRef = React.useRef(null);
-    let ref = React.useRef(null);
+    let ref2 = React.useRef(null);
     useEffect(() => {
         if (mapRef.current) return;
         if (mapContainer) {
@@ -75,6 +75,7 @@ const Dashboard = ({ reducer }) => {
                     }
                 }
                 if (i === features.length - 1) {
+                    setFilter(arr)
                     showFilter(true)
                     setShowingFeatures(features)
                 }
@@ -97,21 +98,29 @@ const Dashboard = ({ reducer }) => {
         }
     }, [agent])
     useEffect(() => {
-        let width = ref.current.clientWidth;
+        if (ref2.current) {
+        let width = ref2.current.clientWidth;
         //Tried merging users arr with feature but really weird err invalid lat lng even tho were valid?
         //call set markers within users? but remove all markers in users then add relevant user marker w no pop then go onto add other markers
         addUsers({ usersSt, setUsersSt, users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
-    }, [showingFeatures, users])
+        }
+    }, [showingFeatures, users, ref2])
 
+    const dashRef = React.useRef({ref2, mapRef})
+    console.log(dashRef, ref2)
     return (
         <Fragment>
-            <Sidebar users={users} ref={ref} close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} mapRef={mapRef} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
+            {mapRef.current && 
+            <Sidebar 
+            ref={dashRef}
+            users={users} close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
+            }
             {filterState && filter.length > 0 &&
                 <Filter handleChange={handleChange} filter={filter} />
             }
             <div className="map" ref={mapContainer}></div>
             <Zoom mapRef={mapRef} />
-            <User setShowingFeatures={setShowingFeatures} setUsers={setUsers} users={users} setAgent={setAgent} bounds={bounds} showingFeatures={showingFeatures} ref={ref} close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} mapRef={mapRef} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
+            <User setUsers={setUsers} users={users} />
         </Fragment>
 
     )

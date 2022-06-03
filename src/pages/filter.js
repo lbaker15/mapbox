@@ -4,6 +4,7 @@ import React, { Fragment, ReactNode, RefObject, useCallback, useEffect, useState
 import ReactDOM from 'react-dom';
 
 const Filter = ({ handleChange, filter }) => {
+    // console.log('filter', filter)
     return (
         <div className='filter__outer'>
             <div className="filter">

@@ -45,9 +45,11 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
         let lat = feature.geometry.coordinates[0];
         let lng = feature.geometry.coordinates[1];
 
-        let besuchInitial = (feature.properties.besuchInitial) ? (feature.properties.besuchInitial) ? feature.properties.besuchInitial[0] + feature.properties.besuchInitial[1] : feature.properties.besuchInitial : '';
-        let orderInitial = (feature.properties.orderInitial) ? (feature.properties.orderInitial) ? feature.properties.orderInitial[0] + feature.properties.orderInitial[1] : feature.properties.orderInitial : '';
-        console.log(besuchInitial, orderInitial)
+        let besuch = feature.properties.besuch;
+        let karte = feature.properties.karte;
+        let sampleDate = feature.properties.sampleDate;
+        let order = feature.properties.order;
+        console.log(feature)
         let marker = new mapboxgl.Marker(element)
             .setLngLat(feature.geometry.coordinates)
             .setPopup(
@@ -76,21 +78,21 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
                            <div class="col1">
                                 <div>
                                     <h2>Besuch</h2>
-                                    <h4>${feature.properties.besuch ? new Date(Number(feature.properties.besuch)).getDate() + '.' + new Date(Number(feature.properties.besuch)).getMonth() + besuchInitial : '<span>keiner</span>'}</h4>
+                                    <h4>${besuch ?  (besuch.length > 0) ? besuch : '<span>keiner</span>' : '<span>keiner</span>'}</h4>
                                 </div>
                                 <div>
                                     <h2>Karte</h2>
-                                    <h4>${feature.properties.karte ? 'Aktiv' : '<span>Passiv</span>'}</h4>
+                                    <h4>${karte ? 'Aktiv' : '<span>Passiv</span>'}</h4>
                                 </div>
                            </div>
                            <div class="col2">
                                 <div>
                                     <h2>Sample</h2>
-                                    <h4>${feature.properties.sampleDate ? new Date(Number(feature.properties.sampleDate)).getDate() + '.' + new Date(Number(feature.properties.sampleDate)).getMonth()  + feature.properties.sample[0] + feature.properties.sample[1] : '<span>keine</span>'}</h4>
+                                    <h4>${sampleDate ? (sampleDate.length > 0) ? sampleDate :  '<span>keine</span>' : '<span>keine</span>'}</h4>
                                 </div>
                                 <div>
                                     <h2>Order</h2>
-                                    <h4>${feature.properties.order ? new Date(Number(feature.properties.order)).getDate() + '.' + new Date(Number(feature.properties.order)).getMonth() + orderInitial : '<span>keine</span>'}</h4>
+                                    <h4>${order ? (order.length > 0) ? order :  '<span>keine</span>' : '<span>keine</span>'}</h4>
                                 </div>
                            </div>
                            <div class="col3">
@@ -133,7 +135,6 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
             } else {
                 let highLat = 47.78974172714257; let lowLat = 45.83010067882378;
                 let lowLng = 6.108715050165898; let highLng = 9.863999940713143;
-                console.log(bounds)
                 bounds.map((b, i) => {
                     let theLat = b[1]; let theLng = b[0];
                     if (theLat < lowLat) {
@@ -153,12 +154,10 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
                     }
                     if (i === bounds.length - 1) {
                         bounds = [[lowLng, lowLat], [highLng, highLat]]
-                        console.log('here new', bounds)
                         setBounds(bounds)
                         if (close) {
                             mapRef.current.fitBounds(bounds, { padding: { top: 75, left: 75, right: 75, bottom: 75 }, duration: 500 })
                         } else {
-                            console.log('check', bounds)
                             mapRef.current.fitBounds(bounds, { padding: { top: 75, left: width, right: 75, bottom: 75 }, duration: 500 })
                         }
                         setMarkersSt(markers)

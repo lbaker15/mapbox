@@ -4,7 +4,8 @@ import { RootState } from '../store';
 import { setMarkers, addUsers } from './helper';
 import { gsap } from 'gsap';
 
-const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt, bounds, setMarkersSt, mapRef, features, setShowingFeatures }, ref) => {
+const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt, bounds, setMarkersSt, features }, ref) => {
+    const {mapRef, ref2} = ref.current;
     const [searchSt, setSearchSt] = useState('')
     const [state, setState] = useState([])
     const [resize, setResize] = useState(Date.now())
@@ -23,7 +24,6 @@ const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt
     const setValues = () => {
         const searchedObjects = []
         state.forEach((singleObject, index) => {
-            console.log(singleObject)
             Promise.all(Object.values(singleObject).map((onlyValues, valIndex) => {
                 if (onlyValues) {
                     if (onlyValues.toLowerCase().includes(searchSt.toLowerCase())) {
@@ -53,7 +53,7 @@ const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt
             if (i === showingResults.length - 1) {
                 console.log(a)
                 let showingFeatures = a;
-                let width = ref.current.clientWidth;
+                let width = ref2.current.clientWidth;
                 setMarkers({ width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
                 addUsers({ users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
             }
@@ -79,15 +79,15 @@ const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt
 
     }, [features])
     const setMapMenu = () => {
-        if (ref.current) {
-            let width = ref.current.clientWidth;
+        if (ref2.current) {
+            let width = ref2.current.clientWidth;
             if (close) {
                 let margin = 15;
-                gsap.to(ref.current, { transform: `translateX(-${width - (width/5 - margin)}px)` })
+                gsap.to(ref2.current, { transform: `translateX(-${width - (width/5 - margin)}px)` })
                
                 mapRef.current.fitBounds(bounds, { padding: { left: 75, top: 75, right: 75, bottom: 75 }, duration: 500 })
             } else {
-                gsap.to(ref.current, { transform: 'translateX(0px)' })
+                gsap.to(ref2.current, { transform: 'translateX(0px)' })
    
                 mapRef.current.fitBounds(bounds, { padding: { left: width, top: 75, right: 75, bottom: 75 }, duration: 500 })
             }
@@ -104,7 +104,7 @@ const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt
 
     useEffect(() => {
         window.addEventListener('resize', () => {
-            if (ref.current && mapRef.current) {
+            if (ref2.current && mapRef.current) {
                 setResize(Date.now())
             }
         })
@@ -112,10 +112,10 @@ const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt
             window.removeEventListener('resize', () => { })
         }
     }, [])
-    console.log('sidebar rerender', close)
+
     return (
         <div
-            ref={ref}
+            ref={ref2}
             className="sidebar__outer">
             <button
                 className="sidebarBtn"

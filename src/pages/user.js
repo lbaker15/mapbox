@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { setMarkers } from "./helper";
 
 
-const User = ({ users, setUsers, setShowingFeatures, setAgent, bounds, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt }) => {
+const User = ({ users, setUsers }) => {
     const [status, setStatus] = useState(7)
     const [lat, setLat] = useState(null)
     const [lng, setLng] = useState(null)

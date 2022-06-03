@@ -49,7 +49,7 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
         let karte = feature.properties.karte;
         let sampleDate = feature.properties.sampleDate;
         let order = feature.properties.order;
-        console.log(feature)
+        // console.log(feature)
         let marker = new mapboxgl.Marker(element)
             .setLngLat(feature.geometry.coordinates)
             .setPopup(

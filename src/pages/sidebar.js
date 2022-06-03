@@ -4,7 +4,7 @@ import { RootState } from '../store';
 import { setMarkers, addUsers } from './helper';
 import { gsap } from 'gsap';
 
-const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt, bounds, setMarkersSt, features }, ref) => {
+const Sidebar = React.forwardRef(({ setUsersSt, usersSt, users, close, setClose, setBounds, markersSt, bounds, setMarkersSt, features }, ref) => {
     const {mapRef, ref2} = ref.current;
     const [searchSt, setSearchSt] = useState('')
     const [state, setState] = useState([])
@@ -54,8 +54,8 @@ const Sidebar = React.forwardRef(({ users, close, setClose, setBounds, markersSt
                 console.log(a)
                 let showingFeatures = a;
                 let width = ref2.current.clientWidth;
-                setMarkers({ width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
-                addUsers({ users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
+                //setMarkers({ width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
+                addUsers({ setUsersSt, usersSt, users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
             }
         })
     }

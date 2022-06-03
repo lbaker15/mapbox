@@ -28,6 +28,7 @@ const Dashboard = ({ reducer }) => {
     let mapContainer = React.useRef(null)
     let mapRef = React.useRef(null);
     let ref2 = React.useRef(null);
+    const dashRef = React.useRef({ ref2, mapRef })
     useEffect(() => {
         if (mapRef.current) return;
         if (mapContainer) {
@@ -47,13 +48,15 @@ const Dashboard = ({ reducer }) => {
         fetch(`https://api.mapbox.com/datasets/v1/${username}/cl3j6sh8h0a2u27lnjadddnto/features?access_token=${accessToken}`)
             .then(res => res.json())
             .then(data => {
+                //CHANGE
                 fetch(`https://api.mapbox.com/datasets/v1/${username}/cl3t0e5rv039s28mzlw0ni8g5/features?access_token=${accessToken}`)
-                .then(res => res.json())
-                .then(data2 => {
-                    let arr = data2.features;
-                    setUsers(arr)
-                    setFeatures(data.features)
-                })
+                    .then(res => res.json())
+                    .then(data2 => {
+                        let arr = data2.features;
+                        setUsers(arr)
+                        setFeatures(data.features)
+                    })
+
             })
             .catch(err => {
                 return err;
@@ -98,28 +101,27 @@ const Dashboard = ({ reducer }) => {
         }
     }, [agent])
     useEffect(() => {
+        //If dont want users to render before showingFeatures - add sf into if statement
         if (ref2.current) {
-        let width = ref2.current.clientWidth;
-        //Tried merging users arr with feature but really weird err invalid lat lng even tho were valid?
-        //call set markers within users? but remove all markers in users then add relevant user marker w no pop then go onto add other markers
-        addUsers({ usersSt, setUsersSt, users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
+            let width = ref2.current.clientWidth;
+            addUsers({ usersSt, setUsersSt, users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
         }
     }, [showingFeatures, users, ref2])
 
-    const dashRef = React.useRef({ref2, mapRef})
-    console.log(dashRef, ref2)
     return (
         <Fragment>
-            {mapRef.current && 
-            <Sidebar 
-            ref={dashRef}
-            users={users} close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
+            {mapRef.current &&
+                <Sidebar
+                    ref={dashRef}
+                    usersSt={usersSt}
+                    setUsersSt={setUsersSt}
+                    users={users} close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
             }
             {filterState && filter.length > 0 &&
                 <Filter handleChange={handleChange} filter={filter} />
             }
             <div className="map" ref={mapContainer}></div>
-            <Zoom mapRef={mapRef} />
+            <Zoom ref={mapRef} />
             <User setUsers={setUsers} users={users} />
         </Fragment>
 

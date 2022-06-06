@@ -174,6 +174,10 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
                 bounds.map((b, i) => {
                     console.log(b)
                     let theLat = b[1]; let theLng = b[0];
+                    if (i===0) {
+                        highLat = theLat; lowLat = theLat;
+                        highLng = theLng; lowLng = theLng;
+                    }
                     if (theLat < lowLat) {
                         lowLat = theLat
                         if (theLng < highLng) {

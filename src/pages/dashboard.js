@@ -118,7 +118,9 @@ const Dashboard = ({ reducer }) => {
                     users={users} close={close} setClose={setClose} setBounds={setBounds} bounds={bounds} markersSt={markersSt} setMarkersSt={setMarkersSt} features={features} setShowingFeatures={setShowingFeatures} />
             }
             {filterState && filter.length > 0 &&
+                <>
                 <Filter handleChange={handleChange} filter={filter} />
+                </>
             }
             <div className="map" ref={mapContainer}></div>
             <Zoom ref={mapRef} />

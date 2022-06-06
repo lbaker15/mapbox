@@ -12,7 +12,7 @@ import img9 from '../images/9_dead.png';
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9]
 let userImage = img2;
 
-export const addUsers = ({usersSt, setUsersSt, users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt}) => {
+export const addUsers = ({ usersSt, setUsersSt, users, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt }) => {
     markersSt.map((marker) => {
         marker.remove()
     })
@@ -24,11 +24,16 @@ export const addUsers = ({usersSt, setUsersSt, users, width, close, setBounds, m
         let element = document.createElement('div')
         //Set style for each user here... ie if user.properties.name == 'Noah' class[0]
         element.classList.add('user-marker')
+        element.classList.add(`user-${user.properties.color}`)
         let marker = new mapboxgl.Marker(element)
-        .setLngLat(user.geometry.coordinates)
-        .addTo(mapRef.current);
+            .setLngLat(user.geometry.coordinates)
+            .setPopup(
+                new mapboxgl.Popup({ offset: 25 })
+                .setHTML(`<div class="user-pop">${user.properties.name}'s current location</div>`)
+            )
+            .addTo(mapRef.current);
         usersArr.push(marker)
-        if (i === users.length-1) {
+        if (i === users.length - 1) {
             setUsersSt(usersArr)
             setMarkers({ bounds, markers, width, close, setBounds, markersSt, showingFeatures, mapRef, setMarkersSt })
         }
@@ -48,8 +53,15 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
         let besuch = feature.properties.besuch;
         let karte = feature.properties.karte;
         let sampleDate = feature.properties.sampleDate;
+        let sampleName = feature.properties.samplename;
         let order = feature.properties.order;
-        // console.log(feature)
+        // console.log('feat', String(feature.properties.date).includes('.'))
+        let dot = String(feature.properties.date).includes('.');
+        let split;
+        if (dot) {
+            let spl = String(feature.properties.date).split('.')
+            split = spl[2] + "." + spl[1] + "." + spl[0]
+        }
         let marker = new mapboxgl.Marker(element)
             .setLngLat(feature.geometry.coordinates)
             .setPopup(
@@ -62,7 +74,13 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
                     
                             <div class="w-80">
                                 <h2>${feature.properties.subject}</h2>
-                                <h5>${!feature.properties.date ? 'undefined' : new Date(Number(feature.properties.date)).toUTCString()}</h5>
+                                <h5>${!feature.properties.date ? 'undefined' : 
+                                (dot) ?
+                                new Date(String(split)).toUTCString()
+                                :
+                                new Date(Number(feature.properties.date)).toUTCString()
+                                }
+                                </h5>
                             </div>
                             <div class="w-20">
                                 <button
@@ -74,11 +92,34 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
                         <h4>${feature.properties.agent}</h4>
                         <p id="contact">${feature.properties.contact}</p>
                         </div>
+                        
+                        <div class="pop-up-outer">
+                        <div id="pop-up">
+                            <div onclick="let pop = document.querySelector('.pop-up-outer'); pop.style.display = 'none';" id="pop-close">X</div>
+                            <div class="pop-body">
+                            <label>Phone 1: </label>
+                            <a
+                            style="color: white; text-decoration: none; font-size: 16px; text-align: center;"
+                            href="tel:${feature.properties.phone}"
+                            >${feature.properties.phone}</a>
+                            ${(feature.properties.phone2) ?
+                            `
+                            <label>Phone 2: </label>
+                            <a
+                                style="color: white; text-decoration: none;  font-size: 16px; text-align: center;"
+                                href="tel:${feature.properties.phone2}"
+                                >${feature.properties.phone2}</a>
+                            `
+                            : ``}
+                            </div>
+                        </div>
+                        </div>
+
                         <div id="footer">
                            <div class="col1">
                                 <div>
                                     <h2>Besuch</h2>
-                                    <h4>${besuch ?  (besuch.length > 0) ? besuch : '<span>keiner</span>' : '<span>keiner</span>'}</h4>
+                                    <h4>${besuch ? (besuch.length > 0) ? besuch : '<span>keiner</span>' : '<span>keiner</span>'}</h4>
                                 </div>
                                 <div>
                                     <h2>Karte</h2>
@@ -87,32 +128,26 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
                            </div>
                            <div class="col2">
                                 <div>
-                                    <h2>Sample</h2>
-                                    <h4>${sampleDate ? (sampleDate.length > 0) ? sampleDate :  '<span>keine</span>' : '<span>keine</span>'}</h4>
+                                    <h2>${sampleName}</h2>
+                                    <h4>${sampleDate ? (sampleDate.length > 0) ? sampleDate : '<span>keine</span>' : '<span>keine</span>'}</h4>
                                 </div>
                                 <div>
                                     <h2>Order</h2>
-                                    <h4>${order ? (order.length > 0) ? order :  '<span>keine</span>' : '<span>keine</span>'}</h4>
+                                    <h4>${order ? (order.length > 0) ? order : '<span>keine</span>' : '<span>keine</span>'}</h4>
                                 </div>
                            </div>
                            <div class="col3">
-                                <div id="pop-up">
-                                    <div onclick="let pop = document.querySelector('#pop-up'); pop.style.display = 'none';" id="pop-close">X</div>
-                                    <a
-                                    style="color: white; text-decoration: none; font-size: 14px; text-align: center;"
-                                    href="tel:${feature.properties.phone}"
-                                    >${feature.properties.phone}</a>
-                                    <a
-                                    style="color: white; text-decoration: none;  font-size: 14px; text-align: center;"
-                                    href="tel:${feature.properties.phone2}"
-                                    >${feature.properties.phone2}</a>
-                                </div>
-                                <script>
-                   
-                                </script>
-                                <button class="green" onclick="let pop = document.querySelector('#pop-up'); pop.style.display = 'flex';">Anrufen</button>
-                                <button class="blue"><a href=${feature.properties.kunde_url}>Kunde</a></button>
-                                <button class="orange">New</button>
+
+
+                                ${(feature.properties.phonebutton === "true") ?
+                                `<button class="green" onclick="let pop = document.querySelector('.pop-up-outer'); pop.style.display = 'flex';">Anrufen</button>`
+                                :
+                                ``
+                                }
+                                
+                                
+                                <button class="blue"><a href=${feature.properties.urlkunde}>Kunde</a></button>
+                                <button class="orange"><a href="${feature.properties.urlnew}">New</a></button>
                            </div>
                         </div>
                         `
@@ -127,15 +162,17 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
                 bounds = (bounds === 0) ? [[6.108715050165898, 45.83010067882378], [9.863999940713143, 47.78974172714257]] : [bounds.flat(), bounds.flat()]
                 setBounds(bounds)
                 if (close) {
-                    mapRef.current.fitBounds(bounds, { padding: { top: 75, left: 75, right: 75, bottom: 75 }, duration: 500})
+                    mapRef.current.fitBounds(bounds, { padding: { top: 75, left: 75, right: 75, bottom: 75 }, duration: 500 })
                 } else {
                     mapRef.current.fitBounds(bounds, { padding: { top: 75, left: width, right: 75, bottom: 75 }, duration: 500 })
                 }
                 setMarkersSt(markers)
             } else {
+                console.log('bounds being set', bounds)
                 let highLat = 47.78974172714257; let lowLat = 45.83010067882378;
                 let lowLng = 6.108715050165898; let highLng = 9.863999940713143;
                 bounds.map((b, i) => {
+                    console.log(b)
                     let theLat = b[1]; let theLng = b[0];
                     if (theLat < lowLat) {
                         lowLat = theLat
@@ -154,6 +191,7 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
                     }
                     if (i === bounds.length - 1) {
                         bounds = [[lowLng, lowLat], [highLng, highLat]]
+                        console.log('check bounds', bounds)
                         setBounds(bounds)
                         if (close) {
                             mapRef.current.fitBounds(bounds, { padding: { top: 75, left: 75, right: 75, bottom: 75 }, duration: 500 })

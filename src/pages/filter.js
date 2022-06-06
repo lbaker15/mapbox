@@ -7,6 +7,7 @@ const Filter = ({ handleChange, filter }) => {
     // console.log('filter', filter)
     return (
         <div className='filter__outer'>
+            <label>Filter via agent</label>
             <div className="filter">
                 <select onChange={handleChange}>
                     <option value="blank"></option>

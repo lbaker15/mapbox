@@ -2,13 +2,8 @@ $red: #f45b5b;
 $orange: rgb(255, 183, 0);
 $blue: rgb(0, 170, 255);
 $green: rgb(0, 228, 87);
-@import './zoom.scss';
-.user-marker {
-    width: 20px !important; height: 20px !important;
-    max-height: 20px !important;
-    background: $blue;
-    border-radius: 50%;
-}
+@import "./zoom.scss";
+
 .mapboxgl-popup {
     max-width: 270px;
 }
@@ -52,7 +47,8 @@ $pad: 10px;
     width: 20%;
     flex-shrink: 0;
     min-width: 60px;
-    background: black; color: white;
+    background: black;
+    color: white;
     border: none;
     height: 20px;
     border-radius: 0 4px 4px 0;
@@ -66,9 +62,22 @@ $pad: 10px;
     overflow-y: scroll;
     padding-top: 15px;
     height: 100%;
+    position: relative;
+}
+.sidebar .body::-webkit-scrollbar {
+    width: 12px;
+    background-color: grey;
+    position: relative;
+}
+.sidebar .body::-webkit-scrollbar-thumb {
+    width: 12px;
+    background-color: black;
+    border-radius: 10px;
+    position: relative;
 }
 .sidebarBtn {
-    width: 20%; height: 50px;
+    width: 20%;
+    height: 50px;
     background: $red;
     z-index: 10;
     // position:fixed;
@@ -78,7 +87,7 @@ $pad: 10px;
     // top: 5px;
     font-size: 26px;
     border-radius: 0 6px 6px 0;
-} 
+}
 @media (max-width: 620px) {
     .sidebar__outer {
         width: 250px;
@@ -94,34 +103,46 @@ $pad: 10px;
     font-family: roboto;
     h2 {
         font-size: 20px;
-        margin:0;
+        margin: 0;
     }
     h3 {
         font-size: 18px;
-        margin:0;
+        margin: 0;
     }
     h4 {
         font-size: 16px;
-        margin:0;
+        margin: 0;
     }
     h5 {
         font-size: 16px;
-        margin:0;
+        margin: 0;
     }
+}
+.mapboxgl-popup {
+    z-index: 10 !important;
 }
 .filter__outer {
     position: fixed;
-    right:10px; top:5px;
-    width: 200px; display: flex;
+    right: 10px;
+    backdrop-filter: blur(10px);
+    top: 5px;
+    gap: 3px;
+    width: 200px;
+    font-family: Manrope;
+    font-weight: 600;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
     z-index: 9;
-    align-items: center; height: 41px;
+    align-items: center;
+    height: 62px;
 }
 .filter {
-    width: 100%;
+    width: 80%;
     z-index: 100;
 }
 .filter select {
-    width: 80%;
+    width: 100%;
     height: 19.3px;
     float: right;
     border: 1px solid $red;
@@ -131,8 +152,11 @@ $pad: 10px;
     word-break: break-all;
 }
 .map {
-    width: 100%; height: 100vh;
-    position: fixed; top: 0; left: 0;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
     z-index: 1;
 }
 //my-class mapboxgl-marker mapboxgl-marker-anchor-center
@@ -143,7 +167,7 @@ $pad: 10px;
     cursor: pointer;
 }
 .my-class {
-    background-image: url('../../images/1_new.png');
+    background-image: url("../../images/1_new.png");
 }
 .w-90 {
     width: 90%;
@@ -159,11 +183,16 @@ $pad: 10px;
         width: 80%;
     }
     .w-20 {
-        width: 20%; display: flex; justify-content: center;
+        width: 20%;
+        display: flex;
+        justify-content: center;
         button {
             background: $blue;
-            width: 40px; height: 40px;
-            margin-top:5px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 5px;
             a {
                 text-decoration: none;
             }
@@ -173,7 +202,7 @@ $pad: 10px;
         font-weight: 500;
         margin-bottom: 0px;
         text-transform: uppercase;
-        font-size:16px;
+        font-size: 16px;
         margin: 2px 0;
     }
     h5 {
@@ -210,43 +239,36 @@ $pad: 10px;
     }
     .col1 {
         width: 33%;
-        h2 { font-size: 13px; margin: 0; text-transform: uppercase; }
-        h4 { font-style: normal; margin: 5px 0; color: green; font-weight: 400; text-transform: uppercase; }
+        h2 {
+            font-size: 13px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+        h4 {
+            font-style: normal;
+            margin: 5px 0;
+            color: green;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
     }
     .col2 {
         width: 33%;
-        h2 { font-size: 13px; margin: 0;  text-transform: uppercase; }
-        h4 { font-style: normal; margin: 5px 0; color: green; font-weight: 400; text-transform: uppercase; }
+        h2 {
+            font-size: 13px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+        h4 {
+            font-style: normal;
+            margin: 5px 0;
+            color: green;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
     }
     .col3 {
         width: 33%;
-    }
-    #pop-up {
-        display: none;
-        width: 125px;
-        padding:5px;
-        height: 70px;
-        background: #767676;
-        left: auto;
-        position: absolute;
-        right: 0;
-        flex-direction: column;
-        margin-top: -80px;
-        border
-        a {
-            color: white; text-decoration: none; 
-            font-family: helvetica;
-            font-size: 18px;
-            text-align: center;
-        }
-        #pop-close {
-            width: 100%;
-            height: 25px;
-            color: white;
-            margin-top:-3px;
-            font-size: 18px;
-            text-align: right;
-        }
     }
     button {
         color: white;
@@ -254,21 +276,68 @@ $pad: 10px;
         text-transform: uppercase;
         border: none;
         font-weight: 600;
-        padding:7px 10px;
+        padding: 7px 10px;
         border-radius: 4px;
         margin-bottom: 5px;
         a {
-            color: white; text-decoration: none;
+            color: white;
+            text-decoration: none;
         }
     }
-    .green {
-        background: $green;
+}
+.green {
+    background: $green;
+}
+.blue {
+    background: $blue;
+}
+.orange {
+    background: $orange;
+}
+.pop-up-outer {
+    width: 240px;
+    display: none;
+    justify-content: center;
+    position: absolute;
+}
+#pop-up {
+    width: 125px;
+    padding: 5px;
+    height: auto;
+    padding-bottom: 20px;
+    background: #6565657c;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+    // margin-top: -80px;
+    a {
+        color: white;
+        text-decoration: none;
+        font-family: helvetica;
+        font-size: 20px;
+        text-align: center;
     }
-    .blue {
-        background: $blue;
+    label {
+        color: white;
+        text-decoration: none;
+        font-family: helvetica;
+        font-size: 16px;
+        text-align: center;
     }
-    .orange {
-        background: $orange;
+    .pop-body {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    #pop-close {
+        width: 100%;
+        height: 14px;
+        color: white;
+        margin-top: -3px;
+        font-family: Manrope;
+        font-size: 15px;
+        text-align: right;
     }
 }
 .mapboxgl-popup-content #header {
@@ -283,3 +352,71 @@ $pad: 10px;
     font-size: 18px;
 }
 
+.user {
+    font-family: Manrope;
+}
+.user select {
+    padding: 4px 10px;
+}
+.user button {
+    padding: 2px 10px;
+    background: black; color: white;
+    font-family: Manrope;
+}
+.user-pop {
+    padding: 15px;
+    font-family: Manrope;
+}
+.user-green {
+    background: $green;
+}
+.user-green:before {
+    background: $green !important;
+    opacity: 0.3;
+}
+.user-blue {
+    background: $blue;
+}
+.user-blue:before {
+    background: $blue !important;
+    opacity: 0.3;
+}
+.user-yellow {
+    background: $orange;
+}
+.user-yellow:before {
+    background: $orange !important;
+    opacity: 0.3;
+}
+.user-red {
+    background: $red;
+}
+.user-red:before {
+    background: $red;
+    opacity: 0.3;
+}
+.user-marker {
+    width: 12px !important;
+    height: 12px !important;
+    max-height: 20px !important;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+}
+@keyframes scale {
+    0% {
+        transform: scale(1);
+    }
+    60% {
+        transform: scale(2);
+    }
+}
+.user-marker:before {
+    content: "";
+    top: 0; left: 0;
+    width: 12px; height: 12px;
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    animation: scale 1s infinite;
+}

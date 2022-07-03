@@ -82,7 +82,7 @@ const Sidebar = React.forwardRef(({ setUsersSt, usersSt, users, close, setClose,
         if (ref2.current) {
             let width = ref2.current.clientWidth;
             if (close) {
-                let margin = 15;
+                let margin = 0;
                 gsap.to(ref2.current, { transform: `translateX(-${width - (width/5 - margin)}px)` })
                
                 mapRef.current.fitBounds(bounds, { padding: { left: 75, top: 75, right: 75, bottom: 75 }, duration: 500 })

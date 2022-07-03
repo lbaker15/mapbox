@@ -20,6 +20,7 @@ export const addUsers = ({ usersSt, setUsersSt, users, width, close, setBounds, 
         marker.remove()
     })
     let markers = []; let bounds = []; let usersArr = [];
+    console.log('users',users)
     users.map((user, i) => {
         let element = document.createElement('div')
         //Set style for each user here... ie if user.properties.name == 'Noah' class[0]
@@ -49,10 +50,10 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
         element.style.backgroundImage = `url(${image})`;
         let lat = feature.geometry.coordinates[0];
         let lng = feature.geometry.coordinates[1];
-
+        console.log(feature)
         let besuch = feature.properties.besuch;
         let karte = feature.properties.karte;
-        let sampleDate = feature.properties.sampleDate;
+        let sampleDate = feature.properties.sample;
         let sampleName = feature.properties.samplename;
         let order = feature.properties.order;
         // console.log('feat', String(feature.properties.date).includes('.'))
@@ -123,7 +124,7 @@ export const setMarkers = ({ bounds, markers, width, close, setBounds, markersSt
                                 </div>
                                 <div>
                                     <h2>Karte</h2>
-                                    <h4>${karte ? 'Aktiv' : '<span>Passiv</span>'}</h4>
+                                    <h4>${karte === "true" ? 'Aktiv' : '<span>Passiv</span>'}</h4>
                                 </div>
                            </div>
                            <div class="col2">
